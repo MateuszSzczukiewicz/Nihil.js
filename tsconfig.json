@@ -12,6 +12,10 @@
         "declaration": true,
         "declarationDir": "./dist/types",
         "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        },
         "noImplicitAny": true,
         "resolveJsonModule": true
     },

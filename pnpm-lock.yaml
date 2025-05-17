@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.6.3

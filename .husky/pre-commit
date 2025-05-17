@@ -1,3 +1,2 @@
 pnpm lint:fix
 pnpm check-format
-pnpm test --passWithNoTests

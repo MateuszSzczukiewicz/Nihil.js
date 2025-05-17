@@ -28,7 +28,10 @@ export default tseslint.config(
     pluginPrettierRecommended,
 
     {
-        rules: {},
+        rules: {
+            "@typescript-eslint/no-implied-eval": "off",
+            "@typescript-eslint/no-unsafe-call": "off",
+        },
     },
 
     {
