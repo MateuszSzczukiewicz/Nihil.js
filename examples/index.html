@@ -3,45 +3,71 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>NihilJS - Educational Example</title>
+        <title>Nihil.js - n-data Simple Example</title>
         <style>
             body {
                 font-family: sans-serif;
                 padding: 20px;
-                background-color: #f0f0f0;
             }
-            .component {
-                background-color: white;
+            .my-component {
+                border: 2px solid steelblue;
                 padding: 15px;
                 margin-bottom: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-            pre {
-                background-color: #282c34;
-                color: #abb2bf;
-                padding: 10px;
-                border-radius: 4px;
-                overflow-x: auto;
+                background-color: #f0f8ff;
             }
         </style>
         <script src="../dist/index.js" defer></script>
     </head>
     <body>
-        <h1>NihilJS - The Pointlessly Educational Framework</h1>
-        <p>Open your browser console to see the logs from NihilJS.</p>
-        <div class="component" my-data="{ message: 'Hello from the void!' }">
-            <p>This is a potential NihilJS component.</p>
-            <p>Its message should be: <span my-text="message"></span></p>
+        <h1>Nihil.js <code>n-data</code> Simple Test</h1>
+        <p>Open your browser's developer console to see the logs from Nihil.js.</p>
+
+        <div class="my-component" n-data="{ message: 'Hello from Nihil.js!', count: 10 }">
+            <h2>Component with Inline Object Data</h2>
+            <p>This div has an <code>n-data</code> attribute with an inline JavaScript object.</p>
+            <p>Check the console for the initialized component data.</p>
+            <pre>n-data="{ message: 'Hello from Nihil.js!', count: 10 }"</pre>
         </div>
-        <div class="component" my-data="{ count: 0, user: { name: 'Nobody' } }">
-            <p>Another component.</p>
-            <p>Count: <span my-text="count"></span></p>
-            <button my-on:click="count++">Increment (doesn't work yet)</button>
-            <p>User: <span my-text="user.name"></span></p>
+
+        <div class="my-component" n-data="{}">
+            <h2>Component with Empty Object Data</h2>
+            <p>This div has an <code>n-data</code> attribute with an empty JavaScript object.</p>
+            <pre>n-data="{}"</pre>
         </div>
-        <div class="component">
-            <p>This one has no 'my-data', so it's just a plain div.</p>
+
+        <div class="my-component" n-data="getComponentData()">
+            <h2>Component with Data from a Function Call</h2>
+            <p>This div's <code>n-data</code> attribute calls a JavaScript function.</p>
+            <pre>n-data="getComponentData()"</pre>
         </div>
+
+        <div class="my-component" n-data>
+            <h2>Component with n-data attribute but no value</h2>
+            <p>This should trigger a warning in the console.</p>
+            <pre>n-data</pre>
+        </div>
+
+        <div class="my-component" n-data="">
+            <h2>Component with n-data attribute and empty string value</h2>
+            <p>This should also trigger a warning in the console.</p>
+            <pre>n-data=""</pre>
+        </div>
+
+        <div class="my-component" n-data="{ message: 'Unterminated string }">
+            <h2>Component with Syntax Error in n-data</h2>
+            <p>This should trigger an error in the console during evaluation.</p>
+            <pre>n-data="{ message: 'Unterminated string }"</pre>
+        </div>
+
+        <script>
+            function getComponentData() {
+                console.log("Nihil.js Example: getComponentData() was called.");
+                return {
+                    source: "Function Call",
+                    timestamp: Date.now(),
+                    active: true,
+                };
+            }
+        </script>
     </body>
 </html>
