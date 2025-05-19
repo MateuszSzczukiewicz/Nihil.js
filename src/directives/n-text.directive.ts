@@ -1,19 +1,31 @@
 import { DirectiveContext, DirectiveHandler } from "@/types/directive.types";
+import { evaluateExpression } from "@/utils/evaluator";
 
 export const nTextDirective: DirectiveHandler = (context: DirectiveContext): void => {
     const { element, expression, component } = context;
 
-    const dataObject = component.data;
+    const updateText = () => {
+        try {
+            const value: unknown = evaluateExpression(expression, component.data);
+            let displayText = "";
 
-    if (dataObject && typeof dataObject === "object" && expression in dataObject) {
-        const value = dataObject[expression];
+            if (value === null || value === undefined) {
+                displayText = "";
+            } else if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+                displayText = String(value);
+            } else {
+                displayText = "";
+                console.warn(
+                    `Nihil.js (n-text): Expression "${expression}" on element <${element.tagName.toLowerCase()}> resolved to a non-primitive value (e.g., object, array). Displaying an empty string. Consider accessing a specific property or using a different directive. Value:`,
+                    value,
+                );
+                element.textContent = displayText;
+            }
+        } catch (error) {
+            console.error(`Nihil.js (n-text): Error evaluating expression "${expression}" for element <${element.tagName.toLowerCase()}>.`, error);
+            element.textContent = "";
+        }
+    };
 
-        element.textContent = String(value);
-    } else {
-        element.textContent = "";
-        console.warn(
-            `Nihil.js (n-text): Property or expression "${expression}" not found in component data for element <${element.tagName.toLowerCase()}>. Data:`,
-            dataObject,
-        );
-    }
+    updateText();
 };
