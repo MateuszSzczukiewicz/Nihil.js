@@ -2,9 +2,10 @@ import { NihilDataObjectSchema } from "@/schemas/component.schemas";
 import type { NihilComponent, NihilComponentData } from "@/types/component.types";
 import type { DirectiveContext, DirectiveHandler } from "@/types/directive.types";
 import { directives as registeredDirectives } from "@/directives";
+import { makeReactive } from "@/core/reactivity";
 
 const DIRECTIVE_PREFIX = "n-";
-const INITIALIZED_ATTR = "data-nihil-initialized";
+const INITIALIZED_ATTR = "initialData-nihil-initialized";
 
 export class Nihil {
     protected rootElement: HTMLElement;
@@ -28,7 +29,7 @@ export class Nihil {
     }
 
     protected discoverAndInitializeComponents(element: HTMLElement): void {
-        if (element.hasAttribute(`${DIRECTIVE_PREFIX}data`) && !element.hasAttribute(INITIALIZED_ATTR)) {
+        if (element.hasAttribute(`${DIRECTIVE_PREFIX}initialData`) && !element.hasAttribute(INITIALIZED_ATTR)) {
             const component = this.initializeComponent(element);
             if (component) {
                 this.scanElementForDirectives(component.element, component);
@@ -48,7 +49,7 @@ export class Nihil {
     }
 
     protected discoverAndInitializeComponentsAndScanDirectives(element: HTMLElement, parentComponentContext: NihilComponent): void {
-        if (element.hasAttribute(`${DIRECTIVE_PREFIX}data`) && !element.hasAttribute(INITIALIZED_ATTR)) {
+        if (element.hasAttribute(`${DIRECTIVE_PREFIX}initialData`) && !element.hasAttribute(INITIALIZED_ATTR)) {
             const nestedComponent = this.initializeComponent(element);
             if (nestedComponent) {
                 this.scanElementForDirectives(nestedComponent.element, nestedComponent);
@@ -71,11 +72,11 @@ export class Nihil {
     protected initializeComponent(element: HTMLElement): NihilComponent | undefined {
         element.setAttribute(INITIALIZED_ATTR, "true");
 
-        const dataString = element.getAttribute(`${DIRECTIVE_PREFIX}data`);
+        const dataString = element.getAttribute(`${DIRECTIVE_PREFIX}initialData`);
 
         if (dataString === null || dataString.trim() === "") {
             console.warn(
-                `Nihil.js: Element <${element.tagName.toLowerCase()}> has [${DIRECTIVE_PREFIX}data] attribute that is missing or empty. Skipping component data initialization.`,
+                `Nihil.js: Element <${element.tagName.toLowerCase()}> has [${DIRECTIVE_PREFIX}initialData] attribute that is missing or empty. Skipping component initialData initialization.`,
                 element,
             );
             return undefined;
@@ -94,14 +95,26 @@ export class Nihil {
             const validationResult = NihilDataObjectSchema.safeParse(evaluatedData);
 
             if (validationResult.success) {
-                const data: NihilComponentData = validationResult.data;
+                const initialData: NihilComponentData = validationResult.data;
 
-                const component: NihilComponent = { element, data };
+                const component: NihilComponent = { element, data: initialData };
+
+                const handleDataUpdate = <P extends keyof NihilComponentData>(
+                    target: NihilComponentData,
+                    property: P,
+                    value: NihilComponentData[P],
+                    oldValue: NihilComponentData[P] | undefined,
+                ) => {
+                    console.log(target, property, value, oldValue);
+                    this.updateComponentView(component);
+                };
+
+                component.data = makeReactive(initialData, handleDataUpdate);
 
                 return component;
             } else {
                 console.error(
-                    `Nihil.js: Evaluated [${DIRECTIVE_PREFIX}data] expression on element <${element.tagName.toLowerCase()}> did not result in a valid data object.`,
+                    `Nihil.js: Evaluated [${DIRECTIVE_PREFIX}initialData] expression on element <${element.tagName.toLowerCase()}> did not result in a valid initialData object.`,
                     {
                         attributeValue: dataString,
                         evaluatedValue: evaluatedData,
@@ -113,7 +126,7 @@ export class Nihil {
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
             console.error(
-                `Nihil.js: Failed to evaluate [${DIRECTIVE_PREFIX}data] expression on element <${element.tagName.toLowerCase()}>. Check for syntax errors.`,
+                `Nihil.js: Failed to evaluate [${DIRECTIVE_PREFIX}initialData] expression on element <${element.tagName.toLowerCase()}>. Check for syntax errors.`,
                 {
                     attributeValue: dataString,
                     error: errorMessage,
@@ -125,9 +138,18 @@ export class Nihil {
         return undefined;
     }
 
+    protected updateComponentView(component: NihilComponent): void {
+        this.scanElementForDirectives(component.element, component);
+        Array.from(component.element.children).forEach((childEl) => {
+            if (childEl instanceof HTMLElement) {
+                this.discoverAndInitializeComponentsAndScanDirectives(childEl, component);
+            }
+        });
+    }
+
     protected scanElementForDirectives(element: HTMLElement, componentContext: NihilComponent): void {
         Array.from(element.attributes).forEach((attr) => {
-            if (attr.name.startsWith(DIRECTIVE_PREFIX) && attr.name !== `${DIRECTIVE_PREFIX}data`) {
+            if (attr.name.startsWith(DIRECTIVE_PREFIX) && attr.name !== `${DIRECTIVE_PREFIX}initialData`) {
                 this.processDirective(element, attr.name, attr.value, componentContext);
             }
         });
