@@ -1,0 +1,91 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    margin: 0;
+    background-color: #f8f9fa;
+    color: #212529;
+    line-height: 1.6;
+}
+
+nav {
+    background-color: #343a40;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background-color: #007bff;
+}
+
+h1,
+h2,
+h3 {
+    color: #343a40;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.my-component {
+    border: 1px solid #ced4da;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+pre {
+    background-color: #282c34;
+    color: #abb2bf;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #e9ecef;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.output {
+    font-weight: bold;
+    color: #007bff;
+    background-color: #e7f3ff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    display: inline-block;
+    min-width: 20px;
+    min-height: 1em;
+    border: 1px dashed #007bff;
+}
