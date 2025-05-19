@@ -16,7 +16,18 @@
                 background-color: #f0f8ff;
             }
         </style>
-        <script src="../dist/index.js" defer></script>
+        <script type="importmap">
+            {
+                "imports": {
+                    "zod": "https://esm.sh/zod@3.24.4",
+                    "@/core/Nihil": "../dist/src/core/Nihil.js",
+                    "@/schemas/component.schemas": "../dist/src/schemas/component.schemas.js",
+                    "@/directives": "../dist/src/directives/index.js",
+                    "@/directives/n-text.directive": "../dist/src/directives/n-text.directive.js"
+                }
+            }
+        </script>
+        <script src="../dist/src/index.js" type="module" defer></script>
     </head>
     <body>
         <h1>Nihil.js <code>n-data</code> Simple Test</h1>
@@ -57,6 +68,13 @@
             <h2>Component with Syntax Error in n-data</h2>
             <p>This should trigger an error in the console during evaluation.</p>
             <pre>n-data="{ message: 'Unterminated string }"</pre>
+        </div>
+
+        <div class="my-component" n-data="{ message: 'It Works!', count: 42 }">
+            <h2>Testing n-text</h2>
+            <p>Message: <span n-text="message">[Should be 'It Works!']</span></p>
+            <p>Count: <span n-text="count">[Should be 42]</span></p>
+            <p>NonExistent: <span n-text="nonExistentKey">[Should be empty, with a console warning]</span></p>
         </div>
 
         <script>

@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "tsc -w --preserveWatchOutput",
         "build": "tsc",
-        "start:example": "pnpm build && live-server examples/",
+        "start:example": "pnpm build && live-server . --open=examples/index.html",
         "lint": "eslint src/**/*.ts",
         "lint:fix": "eslint src/**/*.ts --fix",
         "format": "prettier --write \"src/**/*.ts\" \"examples/**/*.html\" \"*.json\"",

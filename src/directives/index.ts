@@ -1,2 +1,6 @@
 import type { DirectiveHandler } from "@/types/directive.types";
-export const directives: Record<string, DirectiveHandler> = {};
+import { nTextDirective } from "@/directives/n-text.directive";
+
+export const directives: Record<string, DirectiveHandler> = {
+    text: nTextDirective,
+};
