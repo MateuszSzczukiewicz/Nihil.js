@@ -9,7 +9,7 @@ export interface DirectiveContext {
     directiveModifiers: string[];
     expression: string;
     component: NihilComponent;
-    nihilInstance?: Nihil;
+    nihilInstance: Nihil;
 }
 
 export type DirectiveHandlerResult = void | (() => void);

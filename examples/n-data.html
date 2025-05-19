@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nihil.js - n-data Examples</title>
+        <link rel="stylesheet" href="shared-styles.css" />
+        <script type="importmap">
+            {
+                "imports": {
+                    "zod": "https://esm.sh/zod@3.24.4",
+                    "@/core/Nihil": "../dist/src/core/Nihil.js",
+                    "@/schemas/component.schemas": "../dist/src/schemas/component.schemas.js",
+                    "@/directives": "../dist/src/directives/index.js",
+                    "@/directives/n-text.directive": "../dist/src/directives/n-text.directive.js"
+                }
+            }
+        </script>
+        <script src="../dist/src/index.js" type="module" defer></script>
+        <script src="shared-scripts.js" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="n-data.html" class="active">n-data</a></li>
+                    <li><a href="n-text.html">n-text</a></li>
+                </ul>
+            </nav>
+
+            <h1>Nihil.js <code>n-data</code> Examples</h1>
+            <p>
+                These examples demonstrate the <code>n-data</code> directive, which initializes a component's data scope. Check the console for logs.
+            </p>
+
+            <div class="my-component" n-data="{ message: 'Hello from Nihil.js!', count: 10 }">
+                <h2>Component with Inline Object Data</h2>
+                <p>This div has an <code>n-data</code> attribute with an inline JavaScript object.</p>
+                <pre>n-data="{ message: 'Hello from Nihil.js!', count: 10 }"</pre>
+            </div>
+
+            <div class="my-component" n-data="{}">
+                <h2>Component with Empty Object Data</h2>
+                <p>This div has an <code>n-data</code> attribute with an empty JavaScript object.</p>
+                <pre>n-data="{}"</pre>
+            </div>
+
+            <div class="my-component" n-data="getComponentData()">
+                <h2>Component with Data from a Function Call</h2>
+                <p>This div's <code>n-data</code> attribute calls a JavaScript function (defined in shared-scripts.js).</p>
+                <pre>n-data="getComponentData()"</pre>
+            </div>
+
+            <div class="my-component" n-data>
+                <h2>Component with n-data attribute but no value</h2>
+                <p>This should trigger a warning in the console.</p>
+                <pre>n-data</pre>
+            </div>
+
+            <div class="my-component" n-data="">
+                <h2>Component with n-data attribute and empty string value</h2>
+                <p>This should also trigger a warning in the console.</p>
+                <pre>n-data=""</pre>
+            </div>
+
+            <div class="my-component" n-data="{ message: 'Unterminated string }">
+                <h2>Component with Syntax Error in n-data</h2>
+                <p>This should trigger an error in the console during evaluation.</p>
+                <pre>n-data="{ message: 'Unterminated string }"</pre>
+            </div>
+        </div>
+    </body>
+</html>

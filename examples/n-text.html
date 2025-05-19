@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nihil.js - n-text Examples</title>
+        <link rel="stylesheet" href="shared-styles.css" />
+        <script type="importmap">
+            {
+                "imports": {
+                    "zod": "https://esm.sh/zod@3.24.4",
+                    "@/core/Nihil": "../dist/src/core/Nihil.js",
+                    "@/schemas/component.schemas": "../dist/src/schemas/component.schemas.js",
+                    "@/directives": "../dist/src/directives/index.js",
+                    "@/directives/n-text.directive": "../dist/src/directives/n-text.directive.js"
+                }
+            }
+        </script>
+        <script src="../dist/src/index.js" type="module" defer></script>
+        <script src="shared-scripts.js" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="n-data.html">n-data</a></li>
+                    <li><a href="n-text.html" class="active">n-text</a></li>
+                </ul>
+            </nav>
+
+            <h1>Nihil.js <code>n-text</code> Examples</h1>
+            <p>These examples demonstrate the <code>n-text</code> directive. It should display data defined by <code>n-data</code>.</p>
+
+            <div class="my-component" n-data="{ greeting: 'Hello World from n-text!', counter: 0 }">
+                <h2>Simple n-text</h2>
+                <p>Greeting: <span class="output" n-text="greeting">[Greeting]</span></p>
+                <p>Counter: <span class="output" n-text="counter">[Counter]</span></p>
+                <p>
+                    Non-existent:
+                    <span class="output" n-text="nonExistentProperty">[Should be empty + console warning]</span>
+                </p>
+                <pre>
+&lt;div n-data="{ greeting: 'Hello World from n-text!', counter: 0 }"&gt;
+  &lt;p&gt;Greeting: &lt;span n-text="greeting"&gt;...&lt;/span&gt;&lt;/p&gt;
+  &lt;p&gt;Counter: &lt;span n-text="counter"&gt;...&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;</pre
+                >
+            </div>
+
+            <div class="my-component" n-data="getComponentData()">
+                <h2>n-text with data from function and nested properties</h2>
+                <p>Source: <span class="output" n-text="source">[Source]</span></p>
+                <p>
+                    Timestamp:
+                    <span class="output" n-text="timestamp">[Timestamp]</span>
+                </p>
+                <p>Active: <span class="output" n-text="active">[Active]</span></p>
+                <p>
+                    Nested Value:
+                    <span class="output" n-text="nested.value">[Nested Value]</span>
+                </p>
+                <pre>
+&lt;div n-data="getComponentData()"&gt;
+  &lt;p&gt;Source: &lt;span n-text="source"&gt;...&lt;/span&gt;&lt;/p&gt;
+  &lt;p&gt;Nested Value: &lt;span n-text="nested.value"&gt;...&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;</pre
+                >
+            </div>
+
+            <div class="my-component" n-data="{ htmlContent: '&lt;strong&gt;Bold!&lt;/strong&gt;' }">
+                <h2>n-text vs n-html (conceptual)</h2>
+                <p>
+                    Using n-text with HTML content (should display tags as text):
+                    <span class="output" n-text="htmlContent">[HTML Content as Text]</span>
+                </p>
+                <p>(Later, n-html would render this as HTML)</p>
+                <pre>n-text="htmlContent" where htmlContent is '&amp;lt;strong&amp;gt;Bold!&amp;lt;/strong&amp;gt;'</pre>
+            </div>
+        </div>
+    </body>
+</html>
